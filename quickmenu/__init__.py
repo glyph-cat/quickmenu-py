@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""A framework for designing menu-driven interface console programs inspried by React"""
+"""A framework for designing menu-driven interface console programs inspried by React."""
 
 from math import ceil, floor
 from inspect import getargspec
@@ -16,11 +16,18 @@ __maxErrorCount__ = 999
 DEFAULT_PAUSE = "Press any key to continue..."
 
 # Customs Errors
-class NotRenderedError(NotImplementedError): """The `render()` method must be overwritten"""
-class NotReturnedError(NotImplementedError): """The `render()` method must return an object"""
+class NotRenderedError(NotImplementedError): """The `render()` method must be overwritten."""
+class NotReturnedError(NotImplementedError): """The `render()` method must return an object."""
 
 def start(component, props={}):
-    """Use this function to launch a component"""
+    """Use this function to launch a component or start your program.
+
+    :param component: The component to launch
+    :type component: QuickMenu.Component
+    :param props: The props to be passed
+    :type props: dict
+
+    """
     route = props["route"] if "route" in props else []
     route.append(findall(r"[A-z]{1,}(?='>)", str(component))[0])
     props.update({ "route": route })
@@ -28,7 +35,18 @@ def start(component, props={}):
     c.__launch__()
 
 def prompt(text, ifYes, ifNo, defaultResponse="-"):
-    """A simple function for showing boolean prompts"""
+    """A simple function for showing boolean prompts.
+
+    :param text: The prompt message
+    :type text: str
+    :param ifYes: Function to be triggered if "Y" is selected
+    :type ifYes: function
+    :param ifNo: Function to be triggered if "N" is selected
+    :type ifNo: function
+    :param defaultResponse: The default response of the prompt
+    :type defaultResponse: One of "y" or "n"
+
+    """
 
     # Configure hint for default response
     optionPreset = "(y/n)"
@@ -52,7 +70,19 @@ def prompt(text, ifYes, ifNo, defaultResponse="-"):
         else: ifYes()
 
 def setW(width, align, text):
-    """Add padding to strings"""
+    """Add padding to strings.
+
+    :param width: Total width of the new string
+    :type width: int
+    :param align: Alignment of text
+    :type align: One of "l", "c" or "r"
+    :param text: The text to be formatted
+    :type text: str
+
+    :returns: The formatted string.
+    :rType: str
+
+    """
     diff = width - len(text)
     if align == "l": # "left"
         return text + (" " * diff)
@@ -65,7 +95,23 @@ def setW(width, align, text):
         raise ValueError("Expected `align` to be one of ['l', 'c', 'r'] but got " + str(type(align)) + " instead. ")
 
 def getGridMenu(options, breakBy, bullet = "", vIndex = None, useText = False):
-    """Creates a neatly arranged grid menu"""
+    """Creates a neatly arranged grid menu.
+
+    :param options: The list
+    :type options: list
+    :param breakBy: Number of columns to break the grid by
+    :type breakBy: int
+    :param bullet: The bullet format
+    :type bullet: str
+    :param vIndex: Indices that corresponds to the options (for vertical list)
+    :type vIndex: list
+    :param useText: (Internal use) Use options[i]["text"] instead of options[i]
+    :type useText: bool
+
+    :returns: The formatted grid menu.
+    :rType: str
+
+    """
     output = ""
     maxLenPerRow = [0 for i in range(breakBy)]
     for i in range(len(options)):
@@ -90,7 +136,17 @@ def getGridMenu(options, breakBy, bullet = "", vIndex = None, useText = False):
     return output
 
 def vGridTransform(options, breakBy):
-    """Rearranges an array for vertical menu printing"""
+    """Rearranges an array for vertical menu printing.
+
+    :param options: The list
+    :type options: list
+    :param breakBy: Number of columns to break the grid by
+    :type breakBy: int
+
+    :returns: A rearranged list and their original indices.
+    :rType: { "arr": list<str>, "ind": list<int> }
+
+    """
     breakBy_vert = ceil(len(options) / breakBy)
     vInd = [[] for i in range(breakBy_vert)]
     vArr = [[] for i in range(breakBy_vert)]
@@ -107,10 +163,10 @@ def vGridTransform(options, breakBy):
     }
 
 class Component(object):
-    """Inherit this object to begin designing your menu"""
+    """Inherit this object to begin designing your menu."""
 
     def __init__(self, props):
-        """You must call this method to initialize the component"""
+        """You must call this method to initialize the component."""
 
         # Basic properties - DO NOT tamper with these values
         self.renderCount = 0
@@ -137,7 +193,7 @@ class Component(object):
         if "style" in self.props: self.style.update(self.props["style"])
 
     def render(self):
-        """Called to process the rendarable contents"""
+        """Called to process the rendarable contents."""
         return {}
 
     def componentWillPrint(self, head, body, foot):
@@ -152,10 +208,10 @@ class Component(object):
         exit()
 
     def componentDidMount(self):
-        """Called when the component is first loaded"""
+        """Called when the component is first loaded."""
 
     def componentDidLoop(self):
-        """Called when the component has repeated itself"""
+        """Called when the component has repeated itself."""
 
     def componentDidReceive(self, response, body, injected):
         """Called when the component receives a response.
@@ -202,10 +258,10 @@ class Component(object):
             print("Invalid input. ")
 
     def componentWillLoop(self):
-        """Called before the component repeats itself"""
+        """Called before the component repeats itself."""
 
     def componentWillUnmount(self):
-        """Called right before the component exits"""
+        """Called right before the component exits."""
 
     def __stringifyBody__(self, body): # Override with caution
         """The function used to control how the body is printed.
@@ -244,7 +300,7 @@ class Component(object):
         return output.expandtabs(1)
 
     def __launch__(self): # DO NOT override
-        """The function used to launch a component"""
+        """The function used to launch a component."""
         try:
             while (self.loop == True):
 

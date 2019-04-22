@@ -9,7 +9,7 @@ Functions
 start
 ~~~~~
 
-This function helps you start your program.
+Use this function to launch a component or start your program.
 
 +-----------+-------------------------+---------------------+
 | Arguments | Description             | Type                |
@@ -73,7 +73,7 @@ This functions allow you to add padding to strings, making them look neater in t
 | text      | The text to be formatted      | str                                          |
 +-----------+-------------------------------+----------------------------------------------+
 
-* Returns: :code:`str`
+* Returns [:code:`str`]: The formatted string.
 
 Example:
 
@@ -101,7 +101,7 @@ A built-in function to format arrays into neatly aligned grid menu.
 | useText   | (Internal use) Use options[i]["text"] instead of options[i] | bool | :code:`False` |
 +-----------+-------------------------------------------------------------+------+---------------+
 
-* Returns :code:`str`
+* Returns [:code:`str`]: The formatted grid menu.
 
 Example (Horizontal list):
 
@@ -133,7 +133,7 @@ Rearranges an array to be printed as vertical menu.
 | breakBy   | Number of columns to break the grid by                      | int  | :code:`None`  |
 +-----------+-------------------------------------------------------------+------+---------------+
 
-Returns: :code:`{ "arr": list<str>, "ind": list<int> }`
+Returns [:code:`{ "arr": list<str>, "ind": list<int> }`]: A rearranged list and their original indices.
 
 Example:
 
