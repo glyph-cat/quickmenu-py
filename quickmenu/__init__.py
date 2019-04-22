@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""A framework for designing menu-driven interface console programs inspried by React."""
+"""A framework for designing menu-driven interface console programs inspired by React."""
 
 from math import ceil, floor
 from inspect import getargspec
