@@ -94,15 +94,15 @@ componentDidReceive
 
 This method is called when the component receives a response. You are provided with three arguments:
 
-+------------------+---------------------------------------------+--------+
-| Arguments        | Description                                 | Type   |
-+==================+=============================================+========+
-| :code:`respose`  | The response received                       | (any)  |
-+------------------+---------------------------------------------+--------+
-| :code:`body`     | The entire body from the render method      | list   |
-+------------------+---------------------------------------------+--------+
-| :code:`injected` | Indicates whether the response was injected | bool   |
-+------------------+---------------------------------------------+--------+
++------------------+---------------------------------------------+------+
+| Arguments        | Description                                 | Type |
++==================+=============================================+======+
+| :code:`respose`  | The response received                       | str  |
++------------------+---------------------------------------------+------+
+| :code:`body`     | The entire body from the render method      | list |
++------------------+---------------------------------------------+------+
+| :code:`injected` | Indicates whether the response was injected | bool |
++------------------+---------------------------------------------+------+
 
 By default, a very neat algorithm has been written. You can either override it and call :code:`super()`, then put your code below it, or completely rewrite the method for a more fine-tuned response handling experience. Of course, we hope hope that you will rarely find the need to rewrite this method as it is a tedious process.
 

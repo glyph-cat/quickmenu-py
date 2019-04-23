@@ -10,7 +10,7 @@ from traceback import format_exc
 
 __author__ = "chin98edwin"
 __license__ = "MIT"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __errorcount__ = 0 # Do not tamper with this
 __maxErrorCount__ = 999
 DEFAULT_PAUSE = "Press any key to continue..."
@@ -19,7 +19,7 @@ DEFAULT_PAUSE = "Press any key to continue..."
 class NotRenderedError(NotImplementedError): """The `render()` method must be overwritten."""
 class NotReturnedError(NotImplementedError): """The `render()` method must return an object."""
 
-def start(component, props={}):
+def start(component, props = {}):
     """Use this function to launch a component or start your program.
 
     :param component: The component to launch
@@ -34,7 +34,7 @@ def start(component, props={}):
     c = component(props)
     c.__launch__()
 
-def prompt(text, ifYes, ifNo, defaultResponse="-"):
+def prompt(text, ifYes, ifNo, defaultResponse = "-"):
     """A simple function for showing boolean prompts.
 
     :param text: The prompt message
@@ -44,7 +44,7 @@ def prompt(text, ifYes, ifNo, defaultResponse="-"):
     :param ifNo: Function to be triggered if "N" is selected
     :type ifNo: function
     :param defaultResponse: The default response of the prompt
-    :type defaultResponse: One of "y" or "n"
+    :type defaultResponse: One of "-", y" or "n"
 
     """
 
@@ -166,7 +166,12 @@ class Component(object):
     """Inherit this object to begin designing your menu."""
 
     def __init__(self, props):
-        """You must call this method to initialize the component."""
+        """You must call this method to initialize the component.
+
+        :param props: The props that you wish to pass on to the component
+        :type props: dict
+
+        """
 
         # Basic properties - DO NOT tamper with these values
         self.renderCount = 0
@@ -198,12 +203,25 @@ class Component(object):
 
     def componentWillPrint(self, head, body, foot):
         """Called before the rendered contents are actually printed.
-        This method is intended for debug and testing purposes only."""
-        pass
+        This method is intended for debug and testing purposes only.
+
+        :param head: Text shown above the menu
+        :type head: str
+        :param body: The contents of the menu
+        :type body: str
+        :param foot: Text shown below the menu
+        :type foot: str
+
+        """
 
     def componentDidCatch(self, exception):
         """Called when the component catches an error.
-        Call `self.__launch__()` in your overridden method if you wish to re-mount component."""
+        Call `self.__launch__()` in your overridden method if you wish to re-mount component.
+
+        :param exception: The exception caught in the component
+        :type exception: Exception
+
+        """
         print("\n\nAn error has occured in the following component:\n • " + " > ".join(self.route) + "\n\nWrap the component with an Error Boundary to handle this error. \n" + findall(r"([A-Z][A-z]{1,})", str(type(exception)))[-1] + ": " + exception.__doc__ + "\n\n" + format_exc())
         exit()
 
@@ -216,7 +234,16 @@ class Component(object):
     def componentDidReceive(self, response, body, injected):
         """Called when the component receives a response.
         If overridden, you'll need to provide your own method for response validation.
-        Do not call super on this method while overriding."""
+        Do not call super on this method while overriding.
+
+        :param response: The response received
+        :type response: str
+        :param body: The entire body from the render method
+        :type body: list
+        :param injected: Indicates whether the response was injected
+        :type injected: bool
+
+        """
 
         # To help automatically evaluate to invalid input
         try: response = int(response)
@@ -227,7 +254,7 @@ class Component(object):
             self.loop = False
         elif response > 0 and response <= len(body):
             selected = body[response - 1]; propPause = None
-            def callPause(propPause=propPause):
+            def callPause(propPause = propPause):
                 if injected: return
                 try: propPause = selected["props"]["style"]["pause"]
                 except: pass
@@ -265,7 +292,12 @@ class Component(object):
 
     def __stringifyBody__(self, body): # Override with caution
         """The function used to control how the body is printed.
-        Do not call super on this method while overriding."""
+        Do not call super on this method while overriding.
+
+        :param body: The entire body from the render method
+        :type body: list
+
+        """
 
         # Determine if grid is applicapable
         mode = "default"; breakBy = 1
