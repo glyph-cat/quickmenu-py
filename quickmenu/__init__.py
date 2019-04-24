@@ -125,14 +125,15 @@ def getGridMenu(options, breakBy, bullet = "", vIndex = None, useText = False):
         if i > 0 and i % breakBy == 0: output += "\n"
         maxBulletLen = len(bullet.replace("<b>", str(len(options) + 1)))
         blt = bullet.replace("<b>", str((vIndex[i] if vIndex else i) + 1))
-        width = maxLenPerRow[i % breakBy]
+        blt = setW(maxBulletLen, "r", blt)
         label = ""
         try: label = options[i]["text"] if useText else options[i]
         except: pass
+        widthToSet = maxBulletLen + maxLenPerRow[i % breakBy] + 2
         if label == "":
-            output += setW(maxBulletLen + width + 2, "l", " " * len(blt) + "")
+            output += setW(widthToSet, "l", " " * len(blt) + "")
         else:
-            output += setW(maxBulletLen + width + 2, "l", blt + label)
+            output += setW(widthToSet, "l", blt + label)
     return output
 
 def vGridTransform(options, breakBy):
@@ -151,7 +152,7 @@ def vGridTransform(options, breakBy):
     vInd = [[] for i in range(breakBy_vert)]
     vArr = [[] for i in range(breakBy_vert)]
     for i in range(len(options)):
-        vArr[i % breakBy_vert].append(str(options[i]))
+        vArr[i % breakBy_vert].append(options[i])
         vInd[i % breakBy_vert].append(i)
     for i in range(len(vArr)):
         while len(vArr[i]) < breakBy:

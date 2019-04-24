@@ -24,6 +24,8 @@ Currently targeting:
 | JavaScript | Alpha stage |
 +------------+-------------+
 
+*NOTE:* This project is structured using `Poetry <https://poetry.eustace.io>`_.
+
 Getting Started
 ---------------
 
