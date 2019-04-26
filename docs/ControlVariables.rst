@@ -26,23 +26,25 @@ Or pass them by props like this:
 
 However, only the :code:`self.responseWasValid` control variable will not be passed as a prop. This is because it is meant to be controlled within the component itself and not by its parent component.
 
-+------------------+----------------------------------------------+------+---------------+---------------------+
-| Property         | Description                                  | Type | Default       | Accessible by Props |
-+==================+==============================================+======+===============+=====================+
-| responseWasValid | A flag incidating the validity of a response | bool | :code:`True`  | No                  |
-+------------------+----------------------------------------------+------+---------------+---------------------+
-| test             | Responses injected when prompted for input   | list | :code:`[]`    | Yes                 |
-+------------------+----------------------------------------------+------+---------------+---------------------+
-| loop             | Allows the component to loop                 | bool | :code:`True`  | Yes                 |
-+------------------+----------------------------------------------+------+---------------+---------------------+
-| showOnceHead     | Force component head to show only once       | bool | :code:`False` | Yes                 |
-+------------------+----------------------------------------------+------+---------------+---------------------+
-| showOnceBody     | Force component body to show only once       | bool | :code:`False` | Yes                 |
-+------------------+----------------------------------------------+------+---------------+---------------------+
-| showOnceFoot     | Force component foot to show only once       | bool | :code:`False` | Yes                 |
-+------------------+----------------------------------------------+------+---------------+---------------------+
-| skipIfInvalid    | Skips head/body/foot upon invalid response   | bool | :code:`True`  | Yes                 |
-+------------------+----------------------------------------------+------+---------------+---------------------+
++------------------+---------------------------------------------------------+------+---------------+---------------------+
+| Property         | Description                                             | Type | Default       | Accessible by Props |
++==================+=========================================================+======+===============+=====================+
+| autoCommit       | Automatically commits response upon receiving keystroke | bool | :code:`True`  | No                  |
++------------------+---------------------------------------------------------+------+---------------+---------------------+
+| responseWasValid | A flag incidating the validity of a response            | bool | :code:`True`  | No                  |
++------------------+---------------------------------------------------------+------+---------------+---------------------+
+| test             | Responses injected when prompted for input              | list | :code:`[]`    | Yes                 |
++------------------+---------------------------------------------------------+------+---------------+---------------------+
+| loop             | Allows the component to loop                            | bool | :code:`True`  | Yes                 |
++------------------+---------------------------------------------------------+------+---------------+---------------------+
+| showOnceHead     | Force component head to show only once                  | bool | :code:`False` | Yes                 |
++------------------+---------------------------------------------------------+------+---------------+---------------------+
+| showOnceBody     | Force component body to show only once                  | bool | :code:`False` | Yes                 |
++------------------+---------------------------------------------------------+------+---------------+---------------------+
+| showOnceFoot     | Force component foot to show only once                  | bool | :code:`False` | Yes                 |
++------------------+---------------------------------------------------------+------+---------------+---------------------+
+| skipIfInvalid    | Skips head/body/foot upon invalid response              | bool | :code:`True`  | Yes                 |
++------------------+---------------------------------------------------------+------+---------------+---------------------+
 
 self.loop
 ---------

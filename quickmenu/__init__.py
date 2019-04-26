@@ -5,8 +5,9 @@
 from math import ceil, floor
 from inspect import getargspec
 from re import findall, compile as rgxCompile
-from sys import exit
+from sys import exit, stdin
 from traceback import format_exc
+import termios, tty
 
 __author__ = "chin98edwin"
 __license__ = "MIT"
@@ -68,6 +69,24 @@ def prompt(text, ifYes, ifNo, defaultResponse = "-"):
     elif defaultResponse == "N":
         if response == "N": ifNo()
         else: ifYes()
+
+def getch(text = ""):
+    """Read keystrokes from user input.
+    Solution by Jon Witt http://www.jonwitts.co.uk/archives/896
+
+    :param text: The prompt text
+    :type text: str
+
+    """
+    print(text)
+    fd = stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(stdin.fileno())
+        ch = stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    return ch
 
 def setW(width, align, text):
     """Add padding to strings.
@@ -180,6 +199,7 @@ class Component(object):
         self.route = self.props["route"] if ("route" in self.props) else ["Unknown"]
 
         # Control variables - Modify to control how the component behaves
+        self.autoCommit = False
         self.responseWasValid = True
         self.test = self.props["test"] if ("test" in self.props) else []
         self.loop = self.props["loop"] if ("loop" in self.props) else True
@@ -375,7 +395,11 @@ class Component(object):
                     print("\n" + self.style["prompt"] + str(response) + " (INJECTED)")
                     injected = True
                 else:
-                    response = input("\n" + self.style["prompt"])
+                    promptText = "\n" + self.style["prompt"]
+                    if self.autoCommit:
+                        response = getch(promptText)
+                    else:
+                        response = input(promptText)
 
                 # (7) Proceed with action selected by the response
                 # Reprint component if response is empty in case console was cleared

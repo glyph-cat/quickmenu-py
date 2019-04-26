@@ -5,7 +5,8 @@ class MainMenu(Component):
     def __init__(self, props):
         super().__init__(props)
         self.style["grid"] = "v-3"
-        self.test = [1, 0]
+        # self.test = [1, 0]
+        self.autoCommit = True
 
     def componentDidMount(self):
         self.style["grid"] = "h-4"

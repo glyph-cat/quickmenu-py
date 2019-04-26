@@ -17,7 +17,7 @@ Currently targeting:
 +============+=============+
 | Python     | Beta stage  |
 +------------+-------------+
-| C++        | Pending     |
+| C++        | Alpha stage |
 +------------+-------------+
 | Java       | Pending     |
 +------------+-------------+

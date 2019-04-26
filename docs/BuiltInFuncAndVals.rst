@@ -59,6 +59,25 @@ Example:
             def no(): self.loop = False
             prompt("Add another data?", yes, no, "y")
 
+getch
+~~~~~
+This method allows you to read keystrokes from user input.
+
++-----------+-----------------+------+----------+
+| Arguments | Description     | Type | Optional |
++===========+=================+======+==========+
+| text      | The prompt text | int  | Yes      |
++-----------+-----------------+------+----------+
+
+* Returns: :code:`str`
+
+Example:
+
+    ::
+
+        char = getch()
+        print("The key pressed is " + char)
+
 setW
 ~~~~
 This functions allow you to add padding to strings, making them look neater in tables.
