@@ -5,7 +5,6 @@ Component Methods
 
 _\_\init_\_
 -----------
-
 This is the constructor of the Component object. You MUST override the :code:`__init__()` method and call :code:`super().__init__(props=props)` regardless of props. If you are to modify control variables such as :code:`self.showOnce...`, :code:`self.skipIfInvalid` and :code:`self.test`, it is adviced that you do them here and not change their values later on to prevent confusion.
 
 
@@ -81,17 +80,14 @@ This method will be called when an error occurs in your component. You will be p
 
 componentDidMount
 -----------------
-
 This method is called after a component is mounted. No arguments are provided in this method. Basically you can do anything here, but if it's for initializing the component, it is better place your code in the constructor.
 
 componentDidLoop
 ----------------
-
 This method is called after a loop has been completed. A loop means that the head, body and foot of the menu has been shown, a response has been prompted and received, and the actions corresponding to the response has been completed. No arguments are provided in this method.
 
 componentDidReceive
 -------------------
-
 This method is called when the component receives a response. You are provided with three arguments:
 
 +------------------+---------------------------------------------+------+
@@ -110,20 +106,21 @@ TIP: Prompt messages such as "Add another data? (y/n)" should be place in this m
 
 componentWillLoop
 -----------------
-
 This method is called if a component is going to loop again. No arguments are provided in this method.
 
 componentWillUnmount
 --------------------
-
 This method is called right before a component unmounts itself. No arguments are provided in this method.
 
 To give you a sense of what you can do with this method, you can for example, in your root component, override it and add a message like "Program has been terminated by the user".
 
 stringifyBody
 -------------
-
 This method is used to create the body of the component. A :code:`body` argument is provided here. By default, there is also a nicely written code to handle how a menu is printed. You may override it to customize the appearance of your menu.
+
+navigate
+--------
+This method is used to navigate from the current component to a child. Each time a selection from the menu is made, we make use of this function is as well.
 
 _\_\launch_\_
 -------------

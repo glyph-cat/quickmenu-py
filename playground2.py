@@ -16,27 +16,17 @@ loop = True
 while loop:
     char = getch()
 
-    if (char == "p"):
-        print("Stop!")
-        exit(0)
-
-    if (char == "a"):
-        print("Left pressed")
-
-    elif (char == "d"):
-        print("Right pressed")
-
-    elif (char == "w"):
-        print("Up pressed")
-
-    elif (char == "s"):
-        print("Down pressed")
-
-    elif (char == "1"):
-        print("Number 1 pressed")
-
-    elif (char == "0"):
+    if (char == "0" or char == "000"):
         loop = False
-
     else:
-        print("\n" + char + "\n")
+        # print("", type(ord(char)))
+        print("", char)
+        # compare = "\x1b[A"
+        compare = "A"
+        # print(compare)
+
+        if char == compare:
+            print("Key matched!")
+
+
+

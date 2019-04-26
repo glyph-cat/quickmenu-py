@@ -11,14 +11,14 @@ import termios, tty
 
 __author__ = "chin98edwin"
 __license__ = "MIT"
-__version__ = "0.1.1"
+__version__ = "0.1.3"
 __errorcount__ = 0 # Do not tamper with this
 __maxErrorCount__ = 999
 DEFAULT_PAUSE = "Press any key to continue..."
 
 # Customs Errors
 class NotRenderedError(NotImplementedError): """The `render()` method must be overwritten."""
-class NotReturnedError(NotImplementedError): """The `render()` method must return an object."""
+class NotReturnedError(ValueError): """The `render()` method must return an object."""
 
 def start(component, props = {}):
     """Use this function to launch a component or start your program.
@@ -70,7 +70,7 @@ def prompt(text, ifYes, ifNo, defaultResponse = "-"):
         if response == "N": ifNo()
         else: ifYes()
 
-def getch(text = ""):
+def getch(text = "", seq = 1):
     """Read keystrokes from user input.
     Solution by Jon Witt http://www.jonwitts.co.uk/archives/896
 
@@ -83,7 +83,7 @@ def getch(text = ""):
     old_settings = termios.tcgetattr(fd)
     try:
         tty.setraw(stdin.fileno())
-        ch = stdin.read(1)
+        ch = stdin.read(seq)
     finally:
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
     return ch
@@ -102,16 +102,19 @@ def setW(width, align, text):
     :rType: str
 
     """
-    diff = width - len(text)
-    if align == "l": # "left"
-        return text + (" " * diff)
-    elif align == "c": # center
-        halfDiff = floor(diff / 2)
-        return (" " * (halfDiff if (diff % 2 == 0) else (halfDiff + 1))) + text + (" " * halfDiff)
-    elif align == "r": # right
-        return (" " * diff) + text
+    text = str(text); diff = width - len(text)
+    if width > diff:
+        if align == "l": # "left"
+            return text + (" " * diff)
+        elif align == "c": # center
+            halfDiff = floor(diff / 2)
+            return (" " * (halfDiff if (diff % 2 == 0) else (halfDiff + 1))) + text + (" " * halfDiff)
+        elif align == "r": # right
+            return (" " * diff) + text
+        else:
+            raise ValueError("Expected `align` to be one of ['l', 'c', 'r'] but got " + str(type(align)) + " instead. ")
     else:
-        raise ValueError("Expected `align` to be one of ['l', 'c', 'r'] but got " + str(type(align)) + " instead. ")
+        return text
 
 def getGridMenu(options, breakBy, bullet = "", vIndex = None, useText = False):
     """Creates a neatly arranged grid menu.
@@ -199,7 +202,7 @@ class Component(object):
         self.route = self.props["route"] if ("route" in self.props) else ["Unknown"]
 
         # Control variables - Modify to control how the component behaves
-        self.autoCommit = False
+        self.autoCommit = 0
         self.responseWasValid = True
         self.test = self.props["test"] if ("test" in self.props) else []
         self.loop = self.props["loop"] if ("loop" in self.props) else True
@@ -271,7 +274,7 @@ class Component(object):
         except BaseException: response = -1
 
         if response == 0:
-            # By default 0 should be reserved for exit purposes
+            # It is a convention that 0 should be reserved for exit purposes
             self.loop = False
         elif response > 0 and response <= len(body):
             selected = body[response - 1]; propPause = None
@@ -283,9 +286,9 @@ class Component(object):
                 elif propPause: input(propPause)
             if hasattr(selected["component"], "__launch__"):
                 # Is Component
-                newProps = { "response": response, "route": self.route }
+                newProps = { "response": response }
                 if "props" in selected: newProps.update(selected["props"])
-                start(selected["component"], newProps)
+                self.navigate(selected["component"], newProps)
             elif hasattr(selected["component"], "__call__"):
                 # Is function
                 rawProps = { "response": response }
@@ -311,7 +314,7 @@ class Component(object):
     def componentWillUnmount(self):
         """Called right before the component exits."""
 
-    def __stringifyBody__(self, body): # Override with caution
+    def stringifyBody(self, body): # Override with caution
         """The function used to control how the body is printed.
         Do not call super on this method while overriding.
 
@@ -352,6 +355,10 @@ class Component(object):
 
         return output.expandtabs(1)
 
+    def navigate(self, component, props={}):
+        props.update({ "route": self.route })
+        start(component, props)
+
     def __launch__(self): # DO NOT override
         """The function used to launch a component."""
         try:
@@ -374,7 +381,7 @@ class Component(object):
                     if not(self.showOnceHead == True and self.renderCount != 0):
                         if head != "": toPrint += (head + "\n\n")
                     if not (self.showOnceBody == True and self.renderCount != 0):
-                        toPrint += self.__stringifyBody__(body)
+                        toPrint += self.stringifyBody(body)
                     if not (self.showOnceFoot == True and self.renderCount != 0):
                         if foot != "": toPrint += ("\n\n" + foot)
 
@@ -396,10 +403,8 @@ class Component(object):
                     injected = True
                 else:
                     promptText = "\n" + self.style["prompt"]
-                    if self.autoCommit:
-                        response = getch(promptText)
-                    else:
-                        response = input(promptText)
+                    if self.autoCommit > 0: response = getch(promptText, self.autoCommit)
+                    else: response = input(promptText)
 
                 # (7) Proceed with action selected by the response
                 # Reprint component if response is empty in case console was cleared

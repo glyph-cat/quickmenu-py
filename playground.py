@@ -1,15 +1,32 @@
 from quickmenu import Component, start
 
+class SubMenu(Component):
+
+    def __init__(self, props):
+        super().__init__(props)
+
+    def render(self):
+        return {
+            "head": "",
+            "body": [{
+                "text": "Say Hello",
+                "component": "HELLO"
+            }]
+        }
+
 class MainMenu(Component):
 
     def __init__(self, props):
         super().__init__(props)
         self.style["grid"] = "v-3"
         # self.test = [1, 0]
-        self.autoCommit = True
+        self.autoCommit = 1
 
     def componentDidMount(self):
         self.style["grid"] = "h-4"
+
+    def fn(self):
+        self.navigate(SubMenu)
 
     def render(self):
         return {
@@ -18,8 +35,8 @@ class MainMenu(Component):
                 "text": "Hey",
                 "component": "hey"
             }, {
-                "text": "HI",
-                "component": "HI"
+                "text": "goto submenu",
+                "component": self.fn
             }, {
                 "text": "foo",
                 "component": "HI"
